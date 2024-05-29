@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  ims:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'php artisan serve --host=0.0.0.0'
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - ims_db
+
+  ims_db:
+    image: mysql:5.7.22
+    environment:
+      MYSQL_DATABASE: booker
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./storage/dbdata:/var/lib/mysql
+    ports:
+      - 33063:3306
