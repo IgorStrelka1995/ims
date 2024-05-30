@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Audit;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -30,6 +32,17 @@ class ProductFactory extends Factory
             'price' => $this->faker->randomFloat(2, 1, 800),
             'stock' => $this->faker->numberBetween(10, 100)
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Product $product) {
+            Audit::factory()->create([
+                'user_id' => User::all()->random()->id,
+                'action' => Audit::PRODUCT_ADD_ACTION,
+                'product_id' => $product->id
+            ]);
+        });
     }
 
     private function generateUniqueSku($name)

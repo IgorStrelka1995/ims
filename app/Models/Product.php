@@ -15,4 +15,9 @@ class Product extends Model
     {
         return $this->hasMany(Stock::class);
     }
+
+    public function audits()
+    {
+        return $this->hasMany(Audit::class);
+    }
 }
