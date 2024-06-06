@@ -16,8 +16,12 @@ class SaveStockChanges
     {
         $product = $event->product;
 
-        Stock::create([
-            'product_id' => $product->id, 'quantity' => $product->stock, 'type' => Stock::STOCK_IN,
-        ]);
+        $stock = [
+            'product_id' => $product->id,
+            'quantity' => $product->stock,
+            'type' => Stock::STOCK_IN,
+        ];
+
+        Stock::create($stock);
     }
 }

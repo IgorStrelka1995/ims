@@ -10,21 +10,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ProductUpdated
+class ProductDelete
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $product;
-    public $previousStock;
     public $action;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($product, $previousStock, $action)
+    public function __construct($product, $action)
     {
         $this->product = $product;
-        $this->previousStock = $previousStock;
         $this->action = $action;
     }
 }

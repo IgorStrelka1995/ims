@@ -3,7 +3,16 @@
 namespace App\Providers;
 
 use App\Events\ProductCreated;
+use App\Events\ProductDelete;
 use App\Events\ProductUpdated;
+use App\Events\StockIn;
+use App\Events\StockOut;
+use App\Listeners\SaveAuditLogs;
+use App\Listeners\SaveInventoryProductCreation;
+use App\Listeners\SaveInventoryProductDelete;
+use App\Listeners\SaveInventoryProductUpdate;
+use App\Listeners\SaveProductQuantity;
+use App\Listeners\SaveStockAuditLogs;
 use App\Listeners\SaveStockChanges;
 use App\Listeners\SaveStockUpdate;
 use Illuminate\Auth\Events\Registered;
@@ -23,10 +32,20 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ProductCreated::class => [
-            SaveStockChanges::class
+            SaveStockChanges::class,
+            SaveAuditLogs::class
         ],
         ProductUpdated::class => [
-            SaveStockUpdate::class
+            SaveStockUpdate::class,
+            SaveAuditLogs::class
+        ],
+        StockIn::class => [
+            SaveProductQuantity::class,
+            SaveStockAuditLogs::class
+        ],
+        StockOut::class => [
+            SaveProductQuantity::class,
+            SaveStockAuditLogs::class
         ]
     ];
 

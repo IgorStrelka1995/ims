@@ -17,10 +17,16 @@ class SaveStockUpdate
         $product = $event->product;
         $previousStock = $event->previousStock;
 
-        $type = $previousStock < $product->stock ? Stock::STOCK_IN : Stock::STOCK_OUT;
+        if ($previousStock !== $product->stock) {
+            $type = $previousStock < $product->stock ? Stock::STOCK_IN : Stock::STOCK_OUT;
 
-        Stock::create([
-            'product_id' => $product->id, 'quantity' => $product->stock, 'type' => $type,
-        ]);
+            $stock = [
+                'product_id' => $product->id,
+                'quantity' => $product->stock,
+                'type' => $type,
+            ];
+
+            Stock::create($stock);
+        }
     }
 }

@@ -21,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('products', \App\Http\Controllers\Api\v1\ProductController::class);
 Route::apiResource('stocks', \App\Http\Controllers\Api\v1\StockController::class)->only(['index', 'show']);
 Route::apiResource('audits', \App\Http\Controllers\Api\v1\AuditController::class)->only(['index', 'show']);
+
+Route::post("stocks/in/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "in"]);
+Route::post("stocks/out/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "out"]);

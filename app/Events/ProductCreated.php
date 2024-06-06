@@ -15,12 +15,14 @@ class ProductCreated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $product;
+    public $action;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($product)
+    public function __construct($product, $action)
     {
         $this->product = $product;
+        $this->action = $action;
     }
 }

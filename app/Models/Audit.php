@@ -15,8 +15,11 @@ class Audit extends Model
 
     const STOCK_IN_ACTION = 'stock_in';
     const STOCK_OUT_ACTION = 'stock_out';
+    const STOCK_ADJUSTMENT_ACTION = 'stock_adjustment';
 
     protected $table = 'audit_logs';
+
+    protected $guarded = [];
 
     public function product()
     {
