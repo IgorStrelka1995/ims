@@ -2,11 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Models\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SaveProductQuantity
+class HandleUpdateProductQuantity
 {
     /**
      * Handle the event.
@@ -16,10 +15,8 @@ class SaveProductQuantity
         $product = $event->product;
         $stock = $event->stock;
 
-        $productData = [
+        $product->update([
             'stock' => $stock->quantity
-        ];
-
-        $product->update($productData);
+        ]);
     }
 }

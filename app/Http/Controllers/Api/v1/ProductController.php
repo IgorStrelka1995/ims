@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Events\ProductCreated;
-use App\Events\ProductDelete;
 use App\Events\ProductUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Resources\ProductResource;
-use App\Models\Audit;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -45,7 +43,7 @@ class ProductController extends Controller
 
         $product = Product::create($data);
 
-        event(new ProductCreated($product, [Audit::PRODUCT_ADD_ACTION]));
+        event(new ProductCreated($product));
 
         return ProductResource::make($product);
     }
@@ -69,7 +67,7 @@ class ProductController extends Controller
 
         $product->update($data);
 
-        event(new ProductUpdated($product, $previousStock, [Audit::PRODUCT_UPDATE_ACTION, Audit::STOCK_ADJUSTMENT_ACTION]));
+        event(new ProductUpdated($product, $previousStock));
 
         return ProductResource::make($product);
     }
@@ -80,6 +78,8 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+
+        // we should add event for remove product
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

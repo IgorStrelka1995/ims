@@ -45,17 +45,17 @@ class StockController extends Controller
      */
     public function in(Request $request, Product $product)
     {
+        // Add validation rules
+
         $data = $request->only(['quantity']);
 
-        $stockData = [
+        $stock = Stock::create([
             'product_id' => $product->id,
             'quantity' => $data['quantity'],
             'type' => Stock::STOCK_IN
-        ];
+        ]);
 
-        $stock = Stock::create($stockData);
-
-        event(new StockIn($product, $stock, [Audit::STOCK_IN_ACTION]));
+        event(new StockIn($product, $stock));
 
         return StockResource::make($stock);
     }
@@ -67,17 +67,17 @@ class StockController extends Controller
      */
     public function out(Request $request, Product $product)
     {
+        // Add validation rules
+
         $data = $request->only(['quantity']);
 
-        $stockData = [
+        $stock = Stock::create([
             'product_id' => $product->id,
             'quantity' => $data['quantity'],
             'type' => Stock::STOCK_OUT
-        ];
+        ]);
 
-        $stock = Stock::create($stockData);
-
-        event(new StockOut($product, $stock, [Audit::STOCK_OUT_ACTION]));
+        event(new StockOut($product, $stock));
 
         return StockResource::make($stock);
     }

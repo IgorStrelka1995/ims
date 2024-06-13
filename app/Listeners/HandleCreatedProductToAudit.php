@@ -6,7 +6,7 @@ use App\Models\Audit;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SaveAuditLogs
+class HandleCreatedProductToAudit
 {
     /**
      * Handle the event.
@@ -14,17 +14,11 @@ class SaveAuditLogs
     public function handle(object $event): void
     {
         $product = $event->product;
-        $actions = $event->action;
 
-        $audit = [
+        Audit::create([
             'user_id' => 1,
-            'product_id' => $product->id
-        ];
-
-        foreach ($actions as $action) {
-            $audit['action'] = $action;
-
-            Audit::create($audit);
-        }
+            'product_id' => $product->id,
+            'action' => Audit::PRODUCT_ADD_ACTION
+        ]);
     }
 }

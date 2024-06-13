@@ -7,6 +7,13 @@ use App\Events\ProductDelete;
 use App\Events\ProductUpdated;
 use App\Events\StockIn;
 use App\Events\StockOut;
+use App\Listeners\HandleCreatedProductToAudit;
+use App\Listeners\HandleCreatedProductToStock;
+use App\Listeners\HandleStockInToAudit;
+use App\Listeners\HandleStockOutToAudit;
+use App\Listeners\HandleUpdatedProductToAudit;
+use App\Listeners\HandleUpdatedProductToStock;
+use App\Listeners\HandleUpdateProductQuantity;
 use App\Listeners\SaveAuditLogs;
 use App\Listeners\SaveInventoryProductCreation;
 use App\Listeners\SaveInventoryProductDelete;
@@ -32,20 +39,20 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         ProductCreated::class => [
-            SaveStockChanges::class,
-            SaveAuditLogs::class
+            HandleCreatedProductToStock::class,
+            HandleCreatedProductToAudit::class
         ],
         ProductUpdated::class => [
-            SaveStockUpdate::class,
-            SaveAuditLogs::class
+            HandleUpdatedProductToStock::class,
+            HandleUpdatedProductToAudit::class
         ],
         StockIn::class => [
-            SaveProductQuantity::class,
-            SaveStockAuditLogs::class
+            HandleUpdateProductQuantity::class,
+            HandleStockInToAudit::class
         ],
         StockOut::class => [
-            SaveProductQuantity::class,
-            SaveStockAuditLogs::class
+            HandleUpdateProductQuantity::class,
+            HandleStockOutToAudit::class
         ]
     ];
 

@@ -16,15 +16,13 @@ class StockIn
 
     public $product;
     public $stock;
-    public $actions;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($product, $stock, $actions)
+    public function __construct($product, $stock)
     {
         $this->product = $product;
         $this->stock = $stock;
-        $this->actions = $actions;
     }
 }
