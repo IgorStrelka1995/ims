@@ -29,7 +29,7 @@ class ProductController extends Controller
                 AllowedFilter::exact('stock'),
             ])
             ->allowedIncludes(['stocks'])
-            ->paginate($request->input('per_page', 50));
+            ->paginate($request->input('per_page', Product::ITEMS_PER_PAGE));
 
         return ProductResource::collection($products);
     }
@@ -39,11 +39,11 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $data = $request->only(['sku', 'name', 'description', 'price', 'stock']);
+        $data = $request->only(['sku', 'name', 'description', 'price', 'stock', 'user_id']);
 
         $product = Product::create($data);
 
-        event(new ProductCreated($product));
+        event(new ProductCreated($product, $data['user_id']));
 
         return ProductResource::make($product);
     }
@@ -61,13 +61,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $data = $request->only(['sku', 'name', 'description', 'price', 'stock']);
+        $data = $request->only(['sku', 'name', 'description', 'price', 'stock', 'user_id']);
 
         $previousStock = $product->stock;
 
         $product->update($data);
 
-        event(new ProductUpdated($product, $previousStock));
+        event(new ProductUpdated($product, $previousStock, $data['user_id']));
 
         return ProductResource::make($product);
     }

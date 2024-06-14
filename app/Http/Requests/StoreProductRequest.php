@@ -27,6 +27,7 @@ class StoreProductRequest extends FormRequest
             'description' => ['required'],
             'price' => ['required'],
             'stock' => ['required'],
+            'user_id' => ['required']
         ];
     }
 }

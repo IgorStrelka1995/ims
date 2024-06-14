@@ -11,11 +11,12 @@ services:
       - 8000:8000
     depends_on:
       - ims_db
+      - ims_db_testing
 
   ims_db:
     image: mysql:5.7.22
     environment:
-      MYSQL_DATABASE: booker
+      MYSQL_DATABASE: ims
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
@@ -23,3 +24,15 @@ services:
       - ./storage/dbdata:/var/lib/mysql
     ports:
       - 33063:3306
+
+  ims_db_testing:
+    image: mysql:5.7.22
+    environment:
+      MYSQL_DATABASE: ims_test
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./storage/dbdata-testing:/var/lib/mysql
+    ports:
+      - 33064:3306

@@ -9,7 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    const ITEMS_PER_PAGE = 50;
+
+    protected $guarded = ['user_id'];
 
     public function stocks()
     {
