@@ -16,13 +16,15 @@ class StockOut
 
     public $product;
     public $stock;
+    public $user_id;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($product, $stock)
+    public function __construct($product, $stock, $user_id)
     {
         $this->product = $product;
         $this->stock = $stock;
+        $this->user_id = $user_id;
     }
 }

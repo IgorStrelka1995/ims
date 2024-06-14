@@ -22,16 +22,8 @@ class AuditController extends Controller
                 AllowedFilter::exact('user_id'),
                 AllowedFilter::exact('product_id'),
             ])
-            ->paginate($request->input('per_page', 50));
+            ->paginate($request->input('per_page', Audit::ITEMS_PER_PAGE));
 
         return new AuditCollection($audits);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Audit $audit)
-    {
-        return AuditResource::make($audit);
     }
 }

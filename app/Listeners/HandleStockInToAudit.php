@@ -14,9 +14,10 @@ class HandleStockInToAudit
     public function handle(object $event): void
     {
         $product = $event->product;
+        $user_id = $event->user_id;
 
         Audit::create([
-            'user_id' => 1,
+            'user_id' => $user_id,
             'product_id' => $product->id,
             'action' => Audit::STOCK_IN_ACTION
         ]);

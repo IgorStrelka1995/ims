@@ -14,6 +14,14 @@ class AuditCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return $this->collection->map(function($audit) {
+            return [
+                "id" => $audit->id,
+                "user_id" => $audit->user_id,
+                "product_id" => $audit->product_id,
+                "action" => $audit->action,
+                "created_at" => $audit->created_at,
+            ];
+        })->all();
     }
 }

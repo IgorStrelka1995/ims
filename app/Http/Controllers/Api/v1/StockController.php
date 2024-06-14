@@ -25,7 +25,7 @@ class StockController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('product_id')
             ])
-            ->paginate($request->input('per_page', 50));
+            ->paginate($request->input('per_page', Stock::ITEMS_PER_PAGE));
 
         return new StockCollection($stocks);
     }
@@ -47,7 +47,7 @@ class StockController extends Controller
     {
         // Add validation rules
 
-        $data = $request->only(['quantity']);
+        $data = $request->only(['quantity', 'user_id']);
 
         $stock = Stock::create([
             'product_id' => $product->id,
@@ -55,7 +55,7 @@ class StockController extends Controller
             'type' => Stock::STOCK_IN
         ]);
 
-        event(new StockIn($product, $stock));
+        event(new StockIn($product, $stock, $data['user_id']));
 
         return StockResource::make($stock);
     }
@@ -69,7 +69,7 @@ class StockController extends Controller
     {
         // Add validation rules
 
-        $data = $request->only(['quantity']);
+        $data = $request->only(['quantity', 'user_id']);
 
         $stock = Stock::create([
             'product_id' => $product->id,
@@ -77,7 +77,7 @@ class StockController extends Controller
             'type' => Stock::STOCK_OUT
         ]);
 
-        event(new StockOut($product, $stock));
+        event(new StockOut($product, $stock, $data['user_id']));
 
         return StockResource::make($stock);
     }
