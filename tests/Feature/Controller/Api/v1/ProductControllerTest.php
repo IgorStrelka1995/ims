@@ -115,8 +115,6 @@ class ProductControllerTest extends TestCase
     {
         $user = User::factory(1)->create();
 
-        // Test validation rules
-
         $response = $this->postJson('/api/v1/products', [
             "sku" => "lorem-ipsum",
             "name" => "Lorem Ipsum",
@@ -149,8 +147,6 @@ class ProductControllerTest extends TestCase
         $user = User::factory(1)->create();
 
         $product = Product::factory(1)->create();
-
-        // Test validation rules
 
         $response = $this->putJson("/api/v1/products/" . $product->first()->id, [
             "name" => "lorem-ipsum",

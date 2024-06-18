@@ -17,7 +17,7 @@ class HandleUpdatedProductToStock
         $previousStock = $event->previousStock;
 
         if ($previousStock !== $product->stock) {
-            $type = $previousStock < $product->stock ? Stock::STOCK_IN : Stock::STOCK_OUT;
+            $type = $previousStock < $product->stock ? Stock::STOCK_OUT : Stock::STOCK_IN;
 
             Stock::create([
                 'product_id' => $product->id,

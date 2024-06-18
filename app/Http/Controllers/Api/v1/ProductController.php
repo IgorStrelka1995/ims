@@ -6,6 +6,7 @@ use App\Events\ProductCreated;
 use App\Events\ProductUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
         $data = $request->only(['sku', 'name', 'description', 'price', 'stock', 'user_id']);
 
