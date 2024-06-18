@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UpdateProductRequestTest extends TestCase
@@ -15,7 +16,9 @@ class UpdateProductRequestTest extends TestCase
 
     public function testRequiredFieldsWhileProductUpdate()
     {
-        $user = User::factory(1)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $product = Product::factory(1)->create();
 
@@ -52,7 +55,9 @@ class UpdateProductRequestTest extends TestCase
 
     public function testProductSkuIsUniqueWhileProductUpdate()
     {
-        $user = User::factory(1)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $product = Product::factory()->create();
         $product2 = Product::factory()->create();
@@ -77,7 +82,9 @@ class UpdateProductRequestTest extends TestCase
 
     public function testUserIsPresentWhileProductUpdated()
     {
-        $user = User::factory(1)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $user_id = $user->first()->id + 10;
 

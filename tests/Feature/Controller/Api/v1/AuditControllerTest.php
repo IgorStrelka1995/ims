@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuditControllerTest extends TestCase
@@ -26,6 +27,10 @@ class AuditControllerTest extends TestCase
         User::factory(3)->create();
         Product::factory(Product::ITEMS_PER_PAGE)->create();
         Stock::factory(Stock::ITEMS_PER_PAGE)->create();
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->get('/api/v1/audits');
 

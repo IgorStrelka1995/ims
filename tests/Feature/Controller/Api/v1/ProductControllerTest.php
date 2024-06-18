@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
@@ -16,19 +17,20 @@ class ProductControllerTest extends TestCase
 
     public function testReceiveProducts()
     {
-        $userCount = 3;
-        $productCount = Product::ITEMS_PER_PAGE;
+        User::factory(3)->create();
+        Product::factory(Product::ITEMS_PER_PAGE)->create();
 
-        User::factory($userCount)->create();
-        Product::factory($productCount)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->get('/api/v1/products');
 
         $response->assertStatus(200);
 
-        $response->assertJson(function (AssertableJson $json) use ($productCount) {
+        $response->assertJson(function (AssertableJson $json)  {
             $json->hasAll(['data', 'links', 'meta'])
-                ->has('data', $productCount)
+                ->has('data', Product::ITEMS_PER_PAGE)
                 ->has('data.0',function (AssertableJson $json) {
                     $json->hasAll([
                         'id', 'sku', 'name', 'price', 'stock',
@@ -41,11 +43,12 @@ class ProductControllerTest extends TestCase
 
     public function testReceiveProductsWithPagination()
     {
-        $userCount = 3;
-        $productCount = Product::ITEMS_PER_PAGE + 10;
+        User::factory(3)->create();
+        Product::factory(Product::ITEMS_PER_PAGE + 10)->create();
 
-        User::factory($userCount)->create();
-        Product::factory($productCount)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->get('/api/v1/products?page=2');
 
@@ -66,20 +69,21 @@ class ProductControllerTest extends TestCase
 
     public function testReceiveProductsIncludeTransactions()
     {
-        $userCount = 3;
-        $productCount = Product::ITEMS_PER_PAGE;
-
-        User::factory($userCount)->create();
-        Product::factory($productCount)->create();
+        User::factory(3)->create();
+        Product::factory(Product::ITEMS_PER_PAGE)->create();
         Stock::factory(100)->create();
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->get('/api/v1/products?include=stocks');
 
         $response->assertStatus(200);
 
-        $response->assertJson(function (AssertableJson $json) use ($productCount) {
+        $response->assertJson(function (AssertableJson $json) {
             $json->hasAll(['data', 'links', 'meta'])
-                ->has('data', $productCount)
+                ->has('data', Product::ITEMS_PER_PAGE)
                 ->has('data.0', function (AssertableJson $json) {
                     $json->hasAll([
                         'id', 'sku', 'name', 'price', 'stock',
@@ -94,8 +98,11 @@ class ProductControllerTest extends TestCase
 
     public function testReceiveProduct()
     {
-        User::factory(1)->create();
-        $product = Product::factory(1)->create();
+        $user = User::factory()->create();
+
+        $product = Product::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->get('/api/v1/products/' . $product->first()->id);
 
@@ -113,7 +120,9 @@ class ProductControllerTest extends TestCase
 
     public function testStoreProduct()
     {
-        $user = User::factory(1)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->postJson('/api/v1/products', [
             "sku" => "lorem-ipsum",
@@ -144,7 +153,9 @@ class ProductControllerTest extends TestCase
 
     public function testUpdateProduct()
     {
-        $user = User::factory(1)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $product = Product::factory(1)->create();
 
@@ -167,7 +178,9 @@ class ProductControllerTest extends TestCase
 
     public function testDestroyProduct()
     {
-        User::factory(1)->create();
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $product = Product::factory(1)->create();
 

@@ -14,13 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [\App\Http\Controllers\Api\v1\AuthController::class, 'register']);
+Route::post('login', [\App\Http\Controllers\Api\v1\AuthController::class, 'login']);
+Route::post('logout', [\App\Http\Controllers\Api\v1\AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::apiResource('products', \App\Http\Controllers\Api\v1\ProductController::class);
+    Route::apiResource('stocks', \App\Http\Controllers\Api\v1\StockController::class)->only(['index', 'show']);
+    Route::apiResource('audits', \App\Http\Controllers\Api\v1\AuditController::class)->only(['index', 'show']);
+
+    Route::post("stocks/in/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "in"]);
+    Route::post("stocks/out/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "out"]);
 });
-
-Route::apiResource('products', \App\Http\Controllers\Api\v1\ProductController::class);
-Route::apiResource('stocks', \App\Http\Controllers\Api\v1\StockController::class)->only(['index', 'show']);
-Route::apiResource('audits', \App\Http\Controllers\Api\v1\AuditController::class)->only(['index', 'show']);
-
-Route::post("stocks/in/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "in"]);
-Route::post("stocks/out/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "out"]);

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class StockControllerTest extends TestCase
@@ -19,6 +20,10 @@ class StockControllerTest extends TestCase
         User::factory(3)->create();
         Product::factory(Product::ITEMS_PER_PAGE)->create();
         Stock::factory(Stock::ITEMS_PER_PAGE)->create();
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->get('/api/v1/stocks');
 
@@ -44,6 +49,10 @@ class StockControllerTest extends TestCase
         $stockCount = Stock::ITEMS_PER_PAGE + 30;
         Stock::factory($stockCount)->create();
 
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
+
         $response = $this->get('/api/v1/stocks?page=2');
 
         $response->assertStatus(200);
@@ -66,6 +75,10 @@ class StockControllerTest extends TestCase
         Product::factory(1)->create();
         $stock = Stock::factory(1)->create();
 
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
+
         $response = $this->get('/api/v1/stocks/' . $stock->first()->id);
 
         $response->assertStatus(200);
@@ -83,12 +96,14 @@ class StockControllerTest extends TestCase
 
     public function testStockIn()
     {
-        $user = User::factory(1)->create();
-        $product = Product::factory(1)->create();
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
 
-        $response = $this->postJson('/api/v1/stocks/in/' . $product->first()->id, [
+        Sanctum::actingAs($user, ['*']);
+
+        $response = $this->postJson('/api/v1/stocks/in/' . $product->id, [
             "quantity" => 100,
-            "user_id" => $user->first()->id
+            "user_id" => $user->id
         ]);
 
         $response->assertStatus(201);
@@ -105,12 +120,14 @@ class StockControllerTest extends TestCase
 
     public function testStockOut()
     {
-        $user = User::factory(1)->create();
-        $product = Product::factory(1)->create();
+        $user = User::factory()->create();
+        $product = Product::factory()->create();
+
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->postJson('/api/v1/stocks/out/' . $product->first()->id, [
             "quantity" => 99,
-            "user_id" => $user->first()->id
+            "user_id" => $user->id
         ]);
 
         $response->assertStatus(201);
