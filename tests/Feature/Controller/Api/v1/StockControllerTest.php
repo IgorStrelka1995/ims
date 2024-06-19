@@ -15,15 +15,22 @@ class StockControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupRolesToPermissions();
+    }
+
     public function testReceiveStocks()
     {
-        User::factory(3)->create();
+        $user = User::factory()->withRole(User::ROLE_INVENTORY_MANAGER)->create();
+
         Product::factory(Product::ITEMS_PER_PAGE)->create();
+
         Stock::factory(Stock::ITEMS_PER_PAGE)->create();
 
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/stocks');
 
@@ -43,15 +50,13 @@ class StockControllerTest extends TestCase
 
     public function testReceiveStocksWithPagination()
     {
-        User::factory(3)->create();
+        $user = User::factory()->withRole(User::ROLE_INVENTORY_MANAGER)->create();
+
         Product::factory(Product::ITEMS_PER_PAGE)->create();
 
-        $stockCount = Stock::ITEMS_PER_PAGE + 30;
-        Stock::factory($stockCount)->create();
+        Stock::factory( Stock::ITEMS_PER_PAGE + 30)->create();
 
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/stocks?page=2');
 
@@ -71,13 +76,13 @@ class StockControllerTest extends TestCase
 
     public function testReceiveStock()
     {
-        User::factory(1)->create();
-        Product::factory(1)->create();
-        $stock = Stock::factory(1)->create();
+        Product::factory()->create();
 
-        $user = User::factory()->create();
+        $stock = Stock::factory()->create();
 
-        Sanctum::actingAs($user, ['*']);
+        $user = User::factory()->withRole(User::ROLE_INVENTORY_MANAGER)->create();
+
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/stocks/' . $stock->first()->id);
 
@@ -96,10 +101,11 @@ class StockControllerTest extends TestCase
 
     public function testStockIn()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_INVENTORY_MANAGER)->create();
+
         $product = Product::factory()->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->postJson('/api/v1/stocks/in/' . $product->id, [
             "quantity" => 100,
@@ -120,10 +126,11 @@ class StockControllerTest extends TestCase
 
     public function testStockOut()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_INVENTORY_MANAGER)->create();
+
         $product = Product::factory()->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->postJson('/api/v1/stocks/out/' . $product->first()->id, [
             "quantity" => 99,

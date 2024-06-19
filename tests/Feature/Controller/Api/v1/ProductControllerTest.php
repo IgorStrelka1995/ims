@@ -15,14 +15,20 @@ class ProductControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupRolesToPermissions();
+    }
+
     public function testReceiveProducts()
     {
-        User::factory(3)->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
+
         Product::factory(Product::ITEMS_PER_PAGE)->create();
 
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/products');
 
@@ -43,12 +49,11 @@ class ProductControllerTest extends TestCase
 
     public function testReceiveProductsWithPagination()
     {
-        User::factory(3)->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
+
         Product::factory(Product::ITEMS_PER_PAGE + 10)->create();
 
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/products?page=2');
 
@@ -69,13 +74,13 @@ class ProductControllerTest extends TestCase
 
     public function testReceiveProductsIncludeTransactions()
     {
-        User::factory(3)->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
+
         Product::factory(Product::ITEMS_PER_PAGE)->create();
+
         Stock::factory(100)->create();
 
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/products?include=stocks');
 
@@ -96,13 +101,13 @@ class ProductControllerTest extends TestCase
         });
     }
 
-    public function testReceiveProduct()
+    public function testReceiveProduc()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
         $product = Product::factory()->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/products/' . $product->first()->id);
 
@@ -120,9 +125,9 @@ class ProductControllerTest extends TestCase
 
     public function testStoreProduct()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->postJson('/api/v1/products', [
             "sku" => "lorem-ipsum",
@@ -153,9 +158,9 @@ class ProductControllerTest extends TestCase
 
     public function testUpdateProduct()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $product = Product::factory(1)->create();
 
@@ -178,9 +183,9 @@ class ProductControllerTest extends TestCase
 
     public function testDestroyProduct()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $product = Product::factory(1)->create();
 

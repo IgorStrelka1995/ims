@@ -17,9 +17,10 @@ class AuditController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Audit::class);
+
         $audits = QueryBuilder::for(Audit::class)
             ->allowedFilters([
-                AllowedFilter::exact('user_id'),
                 AllowedFilter::exact('product_id'),
             ])
             ->paginate($request->input('per_page', Audit::ITEMS_PER_PAGE));

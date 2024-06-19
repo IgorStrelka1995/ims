@@ -11,7 +11,12 @@ class Product extends Model
 
     const ITEMS_PER_PAGE = 50;
 
-    protected $guarded = ['user_id'];
+    const PRODUCT_STORE_PERMISSION = 'product-create';
+    const PRODUCT_VIEW_PERMISSION = 'product-view';
+    const PRODUCT_UPDATE_PERMISSION = 'product-update';
+    const PRODUCT_DESTROY_PERMISSION = 'product-destroy';
+
+    protected $guarded = [];
 
     public function stocks()
     {

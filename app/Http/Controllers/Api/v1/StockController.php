@@ -21,6 +21,8 @@ class StockController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Stock::class);
+
         $stocks = QueryBuilder::for(Stock::class)
             ->allowedFilters([
                 AllowedFilter::exact('product_id')
@@ -35,6 +37,8 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
+        $this->authorize('view', Stock::class);
+
         return StockResource::make($stock);
     }
 
@@ -45,9 +49,11 @@ class StockController extends Controller
      */
     public function in(Request $request, Product $product)
     {
+        $this->authorize('in', Stock::class);
+
         // Add validation rules
 
-        $data = $request->only(['quantity', 'user_id']);
+        $data = $request->only(['quantity']);
 
         $stock = Stock::create([
             'product_id' => $product->id,
@@ -55,7 +61,7 @@ class StockController extends Controller
             'type' => Stock::STOCK_IN
         ]);
 
-        event(new StockIn($product, $stock, $data['user_id']));
+        event(new StockIn($product, $stock));
 
         return StockResource::make($stock);
     }
@@ -67,9 +73,11 @@ class StockController extends Controller
      */
     public function out(Request $request, Product $product)
     {
+        $this->authorize('out', Stock::class);
+
         // Add validation rules
 
-        $data = $request->only(['quantity', 'user_id']);
+        $data = $request->only(['quantity']);
 
         $stock = Stock::create([
             'product_id' => $product->id,
@@ -77,7 +85,7 @@ class StockController extends Controller
             'type' => Stock::STOCK_OUT
         ]);
 
-        event(new StockOut($product, $stock, $data['user_id']));
+        event(new StockOut($product, $stock));
 
         return StockResource::make($stock);
     }

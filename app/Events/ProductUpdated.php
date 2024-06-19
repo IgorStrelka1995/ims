@@ -16,15 +16,13 @@ class ProductUpdated
 
     public $product;
     public $previousStock;
-    public $user_id;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($product, $previousStock, $user_id)
+    public function __construct($product, $previousStock)
     {
         $this->product = $product;
         $this->previousStock = $previousStock;
-        $this->user_id = $user_id;
     }
 }

@@ -17,6 +17,8 @@ class Audit extends Model
     const STOCK_OUT_ACTION = 'stock_out';
     const STOCK_ADJUSTMENT_ACTION = 'stock_adjustment';
 
+    const AUDIT_VIEW_PERMISSION = 'audit-view';
+
     const ITEMS_PER_PAGE = 100;
 
     protected $table = 'audit_logs';
@@ -26,10 +28,5 @@ class Audit extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

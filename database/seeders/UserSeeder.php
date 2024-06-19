@@ -13,6 +13,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        User::factory()->withRole('admin')->create();
+
+        User::factory(3)->withRole('inventory-manager')->create();
+
+        User::factory(6)->withRole('viewer')->create();
     }
 }

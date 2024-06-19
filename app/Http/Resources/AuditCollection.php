@@ -17,7 +17,6 @@ class AuditCollection extends ResourceCollection
         return $this->collection->map(function($audit) {
             return [
                 "id" => $audit->id,
-                "user_id" => $audit->user_id,
                 "product_id" => $audit->product_id,
                 "action" => $audit->action,
                 "created_at" => $audit->created_at,

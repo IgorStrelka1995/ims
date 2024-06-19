@@ -18,22 +18,17 @@ class HandleUpdateProductQuantityTest extends TestCase
 
     public function testUpdateProductStockAfterStockIn(): void
     {
-        $user = User::factory(1)->create();
-
         $product = ProductWithoutAuditFactory::new();
-        $productData = $product->count(1)->create([
-            'stock' => 100
-        ]);
+
+        $productData = $product->count(1)->create(['stock' => 100]);
 
         $this->assertEquals(100, $productData->first()->stock);
 
         $stockVal = $productData->first()->stock + 10;
 
-        $stockData = Stock::factory(1)->create([
-            'quantity' => $stockVal
-        ]);
+        $stockData = Stock::factory(1)->create(['quantity' => $stockVal]);
 
-        event(new StockIn($productData->first(), $stockData->first(), $user->first()->id));
+        event(new StockIn($productData->first(), $stockData->first()));
 
         $product = Product::find($productData->first()->id);
 
@@ -42,9 +37,8 @@ class HandleUpdateProductQuantityTest extends TestCase
 
     public function testUpdateProductStockAfterStockOut(): void
     {
-        $user = User::factory(1)->create();
-
         $product = ProductWithoutAuditFactory::new();
+
         $productData = $product->count(1)->create([
             'stock' => 100
         ]);
@@ -53,11 +47,9 @@ class HandleUpdateProductQuantityTest extends TestCase
 
         $stockVal = $productData->first()->stock - 10;
 
-        $stockData = Stock::factory(1)->create([
-            'quantity' => $stockVal
-        ]);
+        $stockData = Stock::factory(1)->create(['quantity' => $stockVal]);
 
-        event(new StockOut($productData->first(), $stockData->first(), $user->first()->id));
+        event(new StockOut($productData->first(), $stockData->first()));
 
         $product = Product::find($productData->first()->id);
 

@@ -38,7 +38,6 @@ class ProductFactory extends Factory
     {
         return $this->afterCreating(function (Product $product) {
             Audit::factory()->create([
-                'user_id' => User::all()->random()->id,
                 'action' => Audit::PRODUCT_ADD_ACTION,
                 'product_id' => $product->id
             ]);

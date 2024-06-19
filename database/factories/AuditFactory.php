@@ -21,7 +21,6 @@ class AuditFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::all()->random()->id,
             'action' => Audit::PRODUCT_ADD_ACTION,
             'product_id' => null
         ];

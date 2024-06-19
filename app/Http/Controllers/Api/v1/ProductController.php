@@ -21,6 +21,8 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Product::class);
+
         $products = QueryBuilder::for(Product::class)
             ->allowedFilters([
                 AllowedFilter::exact('id'),
@@ -40,11 +42,13 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $data = $request->only(['sku', 'name', 'description', 'price', 'stock', 'user_id']);
+        $this->authorize('create', Product::class);
+
+        $data = $request->only(['sku', 'name', 'description', 'price', 'stock']);
 
         $product = Product::create($data);
 
-        event(new ProductCreated($product, $data['user_id']));
+        event(new ProductCreated($product));
 
         return ProductResource::make($product);
     }
@@ -54,6 +58,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $this->authorize('view', Product::class);
+
         return ProductResource::make($product);
     }
 
@@ -62,13 +68,15 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $data = $request->only(['sku', 'name', 'description', 'price', 'stock', 'user_id']);
+        $this->authorize('update', Product::class);
+
+        $data = $request->only(['sku', 'name', 'description', 'price', 'stock']);
 
         $previousStock = $product->stock;
 
         $product->update($data);
 
-        event(new ProductUpdated($product, $previousStock, $data['user_id']));
+        event(new ProductUpdated($product, $previousStock));
 
         return ProductResource::make($product);
     }
@@ -78,6 +86,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        $this->authorize('delete', Product::class);
+
         $product->delete();
 
         // we should add event for remove product

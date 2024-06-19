@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Request;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,11 +14,18 @@ class StoreProductRequestTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupRolesToPermissions();
+    }
+
     public function testRequiredFieldsWhileProductStore()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->postJson('/api/v1/products', [
             "sku" => "",
@@ -52,11 +60,11 @@ class StoreProductRequestTest extends TestCase
 
     public function testProductSkuIsUnique()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
-        $response = $this->postJson('/api/v1/products', [
+        $this->postJson('/api/v1/products', [
             "sku" => "lorem-ipsum",
             "name" => "Lorem Ipsum",
             "description" => "Voluptatum sequi odio sint dolorem consectetur nihil quasi.",
@@ -88,9 +96,9 @@ class StoreProductRequestTest extends TestCase
 
     public function testUserIsPresentWhileProductStore()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $user_id = $user->first()->id + 10;
 

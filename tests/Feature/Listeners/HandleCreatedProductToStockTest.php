@@ -17,14 +17,13 @@ class HandleCreatedProductToStockTest extends TestCase
 
     public function testAddDataToStockAfterProductCreated(): void
     {
-        $user = User::factory(1)->create();
-
         $product = ProductWithoutAuditFactory::new();
+
         $productData = $product->count(1)->create();
 
         $this->assertDatabaseCount('stocks', 0);
 
-        event(new ProductCreated($productData->first(), $user->first()->id));
+        event(new ProductCreated($productData->first()));
 
         $this->assertDatabaseCount('stocks', 1);
 

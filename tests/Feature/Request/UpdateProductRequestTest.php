@@ -14,11 +14,18 @@ class UpdateProductRequestTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupRolesToPermissions();
+    }
+
     public function testRequiredFieldsWhileProductUpdate()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $product = Product::factory(1)->create();
 
@@ -55,12 +62,13 @@ class UpdateProductRequestTest extends TestCase
 
     public function testProductSkuIsUniqueWhileProductUpdate()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $product = Product::factory()->create();
-        $product2 = Product::factory()->create();
+
+        Product::factory()->create();
 
         $sku = $product->first()->sku;
 
@@ -82,9 +90,9 @@ class UpdateProductRequestTest extends TestCase
 
     public function testUserIsPresentWhileProductUpdated()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $user_id = $user->first()->id + 10;
 

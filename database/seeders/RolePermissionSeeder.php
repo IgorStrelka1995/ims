@@ -1,20 +1,22 @@
 <?php
 
-namespace Tests;
+namespace Database\Seeders;
 
 use App\Models\Audit;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\User;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-abstract class TestCase extends BaseTestCase
+class RolePermissionSeeder extends Seeder
 {
-    use CreatesApplication;
-
-    protected function setupRolesToPermissions()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
         $permissions = [
             Product::PRODUCT_STORE_PERMISSION, Product::PRODUCT_VIEW_PERMISSION, Product::PRODUCT_UPDATE_PERMISSION,

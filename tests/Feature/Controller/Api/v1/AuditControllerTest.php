@@ -19,18 +19,25 @@ class AuditControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupRolesToPermissions();
+    }
+
     /**
      * A basic feature test example.
      */
     public function testReceiveAudits(): void
     {
-        User::factory(3)->create();
+        $user = User::factory()->withRole(User::ROLE_VIEWER)->create();
+
         Product::factory(Product::ITEMS_PER_PAGE)->create();
+
         Stock::factory(Stock::ITEMS_PER_PAGE)->create();
 
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user, ['*']);
+        Sanctum::actingAs($user);
 
         $response = $this->get('/api/v1/audits');
 
@@ -41,7 +48,7 @@ class AuditControllerTest extends TestCase
                 ->has('data', 50)
                 ->has('data.0',function (AssertableJson $json) {
                     $json->hasAll([
-                        'id', 'user_id', 'product_id', 'action', 'created_at'
+                        'id', 'product_id', 'action', 'created_at'
                     ]);
                 })
             ;

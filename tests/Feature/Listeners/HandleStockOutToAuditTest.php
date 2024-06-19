@@ -17,21 +17,19 @@ class HandleStockOutToAuditTest extends TestCase
 
     public function testAddDataToAuditAfterStockIn(): void
     {
-        $user = User::factory(1)->create();
-
         $product = ProductWithoutAuditFactory::new();
+
         $productData = $product->count(1)->create();
 
-        $stockData = Stock::factory(1)->create();
+        $stockData = Stock::factory()->create();
 
         $this->assertDatabaseCount('audit_logs', 0);
 
-        event(new StockOut($productData->first(), $stockData->first(), $user->first()->id));
+        event(new StockOut($productData->first(), $stockData->first()));
 
         $this->assertDatabaseCount('audit_logs', 1);
 
         $this->assertDatabaseHas('audit_logs', [
-            'user_id' => $user->first()->id,
             'product_id' => $productData->first()->id,
             'action' => Audit::STOCK_OUT_ACTION
         ]);

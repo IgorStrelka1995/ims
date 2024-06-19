@@ -31,7 +31,6 @@ class AuditProductUpdateFactory extends Factory
         $product->save();
 
         return [
-            'user_id' => User::all()->random()->id,
             'action' => Audit::PRODUCT_UPDATE_ACTION,
             'product_id' => $product->id
         ];

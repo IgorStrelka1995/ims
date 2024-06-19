@@ -18,19 +18,17 @@ class HandleCreatedProductToAuditTest extends TestCase
 
     public function testAddDataToAuditAfterProductCreated(): void
     {
-        $user = User::factory(1)->create();
-
         $product = ProductWithoutAuditFactory::new();
+
         $productData = $product->count(1)->create();
 
         $this->assertDatabaseCount('audit_logs', 0);
 
-        event(new ProductCreated($productData->first(), $user->first()->id));
+        event(new ProductCreated($productData->first()));
 
         $this->assertDatabaseCount('audit_logs', 1);
 
         $this->assertDatabaseHas('audit_logs', [
-            'user_id' => $user->first()->id,
             'product_id' => $productData->first()->id,
             'action' => Audit::PRODUCT_ADD_ACTION
         ]);

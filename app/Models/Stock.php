@@ -13,7 +13,11 @@ class Stock extends Model
     const STOCK_OUT = 'Out';
     const ITEMS_PER_PAGE = 100;
 
-    protected $guarded = ['user_id'];
+    const STOCK_VIEW_PERMISSION = 'stock-view';
+    const STOCK_IN_PERMISSION = 'stock-in';
+    const STOCK_OUT_PERMISSION = 'stock-out';
+
+    protected $guarded = [];
 
     public function product()
     {

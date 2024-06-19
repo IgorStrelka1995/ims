@@ -17,16 +17,15 @@ class HandleUpdatedProductToStockTest extends TestCase
 
     public function testAddDataToStockOutAfterProductDataUpdated(): void
     {
-        $user = User::factory(1)->create();
-
         $product = ProductWithoutAuditFactory::new();
+
         $productData = $product->count(1)->create();
 
         $previousStock = $productData->first()->stock - 10;
 
         $this->assertDatabaseCount('stocks', 0);
 
-        event(new ProductUpdated($productData->first(), $previousStock, $user->first()->id));
+        event(new ProductUpdated($productData->first(), $previousStock));
 
         $this->assertDatabaseCount('stocks', 1);
 
@@ -39,16 +38,15 @@ class HandleUpdatedProductToStockTest extends TestCase
 
     public function testAddDataToStockInAfterProductDataUpdated(): void
     {
-        $user = User::factory(1)->create();
-
         $product = ProductWithoutAuditFactory::new();
+
         $productData = $product->count(1)->create();
 
         $previousStock = $productData->first()->stock + 10;
 
         $this->assertDatabaseCount('stocks', 0);
 
-        event(new ProductUpdated($productData->first(), $previousStock, $user->first()->id));
+        event(new ProductUpdated($productData->first(), $previousStock));
 
         $this->assertDatabaseCount('stocks', 1);
 
