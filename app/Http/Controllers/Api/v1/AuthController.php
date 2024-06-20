@@ -18,13 +18,15 @@ class AuthController extends Controller
      */
     public function register(RegisterUser $request)
     {
-        $data = $request->only(['name', 'email', 'password']);
+        $data = $request->only(['name', 'email', 'password', 'role']);
 
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->assignRole($data['role']);
 
         return response()->json(['data' => ['user' => $user]], 201);
     }

@@ -14,6 +14,13 @@ class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setupRolesToPermissions();
+    }
+
     public function testLoginUser()
     {
         User::factory()->create([
@@ -22,11 +29,16 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response = $this->postJson('/api/v1/login', [
-            'email' => 'customer@mail.com',
+            'email' => 'guest@mail.com',
             'password' => 'tmp1234#'
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(401);
+
+        $response = $this->postJson('/api/v1/login', [
+            'email' => 'customer@mail.com',
+            'password' => 'tmp1234#'
+        ]);
 
         $response->assertJson(function (AssertableJson $json) {
             $json->has('data', function (AssertableJson $json) {
@@ -58,5 +70,29 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+    }
+
+    public function testRegisterUser()
+    {
+        $response = $this->postJson('/api/v1/register', [
+            'name' => 'Customer',
+            'email' => 'customer@mail.com',
+            'password' => 'tmp1234#',
+            'role' => User::ROLE_INVENTORY_MANAGER
+        ]);
+
+        $response->assertStatus(201);
+
+        $userId = $response->json('data.user.id');
+
+        $response->assertJson(function (AssertableJson $json) {
+            $json->has('data', function (AssertableJson $json) {
+                $json->has('user');
+            });
+        });
+
+        $roles = User::find($userId)->getRoleNames();
+
+        $this->assertEquals('inventory-manager', $roles->first());
     }
 }

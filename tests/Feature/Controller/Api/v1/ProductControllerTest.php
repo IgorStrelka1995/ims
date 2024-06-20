@@ -101,7 +101,7 @@ class ProductControllerTest extends TestCase
         });
     }
 
-    public function testReceiveProduc()
+    public function testReceiveProduct()
     {
         $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
 

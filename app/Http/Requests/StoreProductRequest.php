@@ -27,8 +27,7 @@ class StoreProductRequest extends FormRequest
             'name' => ['required', 'max:120'],
             'description' => ['required'],
             'price' => ['required', 'decimal:2'],
-            'stock' => ['required', 'integer'],
-            'user_id' => ['required', Rule::exists('users', 'id')]
+            'stock' => ['required', 'integer']
         ];
     }
 }
