@@ -21,7 +21,8 @@ class RolePermissionSeeder extends Seeder
         $permissions = [
             Product::PRODUCT_STORE_PERMISSION, Product::PRODUCT_VIEW_PERMISSION, Product::PRODUCT_UPDATE_PERMISSION,
             Product::PRODUCT_DESTROY_PERMISSION, Stock::STOCK_VIEW_PERMISSION, Stock::STOCK_IN_PERMISSION,
-            Stock::STOCK_OUT_PERMISSION, Audit::AUDIT_VIEW_PERMISSION
+            Stock::STOCK_OUT_PERMISSION, Audit::AUDIT_VIEW_PERMISSION, User::USER_VIEW_PERMISSION,
+            User::USER_CREATE_PERMISSION, User::USER_UPDATE_PERMISSION, User::USER_DELETE_PERMISSION
         ];
 
         foreach ($permissions as $permission) {
@@ -32,7 +33,8 @@ class RolePermissionSeeder extends Seeder
             User::ROLE_ADMIN => [
                 Product::PRODUCT_STORE_PERMISSION, Product::PRODUCT_VIEW_PERMISSION, Product::PRODUCT_UPDATE_PERMISSION,
                 Product::PRODUCT_DESTROY_PERMISSION, Stock::STOCK_VIEW_PERMISSION, Stock::STOCK_IN_PERMISSION,
-                Stock::STOCK_OUT_PERMISSION, Audit::AUDIT_VIEW_PERMISSION
+                Stock::STOCK_OUT_PERMISSION, Audit::AUDIT_VIEW_PERMISSION, User::USER_VIEW_PERMISSION,
+                User::USER_CREATE_PERMISSION, User::USER_UPDATE_PERMISSION, User::USER_DELETE_PERMISSION
             ],
             User::ROLE_INVENTORY_MANAGER => [
                 Product::PRODUCT_VIEW_PERMISSION, Stock::STOCK_VIEW_PERMISSION, Stock::STOCK_IN_PERMISSION,

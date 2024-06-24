@@ -13,25 +13,6 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     /**
-     * @param RegisterUser $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register(RegisterUser $request)
-    {
-        $data = $request->only(['name', 'email', 'password', 'role']);
-
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-
-        $user->assignRole($data['role']);
-
-        return response()->json(['data' => ['user' => $user]], 201);
-    }
-
-    /**
      * @param LoginUser $request
      * @return \Illuminate\Http\JsonResponse
      */

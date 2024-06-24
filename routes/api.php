@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register', [\App\Http\Controllers\Api\v1\AuthController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\Api\v1\AuthController::class, 'login']);
-Route::post('logout', [\App\Http\Controllers\Api\v1\AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('products', \App\Http\Controllers\Api\v1\ProductController::class);
@@ -25,4 +23,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post("stocks/in/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "in"]);
     Route::post("stocks/out/{product}", [\App\Http\Controllers\Api\v1\StockController::class, "out"]);
+
+    Route::post('user/register', [\App\Http\Controllers\Api\v1\UserController::class, 'register']);
+    Route::post('logout', [\App\Http\Controllers\Api\v1\AuthController::class, 'logout']);
 });

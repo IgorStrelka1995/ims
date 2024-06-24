@@ -2,13 +2,9 @@
 
 namespace Tests\Feature\Controller\Api\v1;
 
-use App\Models\Audit;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\User;
-use Database\Factories\AuditProductStockFactory;
-use Database\Factories\AuditProductUpdateFactory;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;

@@ -47,4 +47,9 @@ class User extends Authenticatable
     const ROLE_ADMIN = 'admin';
     const ROLE_INVENTORY_MANAGER = 'inventory-manager';
     const ROLE_VIEWER = 'viewer';
+
+    const USER_VIEW_PERMISSION = 'user-view';
+    const USER_CREATE_PERMISSION = 'user-create';
+    const USER_UPDATE_PERMISSION = 'user-update';
+    const USER_DELETE_PERMISSION = 'user-delete';
 }

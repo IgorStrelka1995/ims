@@ -71,28 +71,4 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-    public function testRegisterUser()
-    {
-        $response = $this->postJson('/api/v1/register', [
-            'name' => 'Customer',
-            'email' => 'customer@mail.com',
-            'password' => 'tmp1234#',
-            'role' => User::ROLE_INVENTORY_MANAGER
-        ]);
-
-        $response->assertStatus(201);
-
-        $userId = $response->json('data.user.id');
-
-        $response->assertJson(function (AssertableJson $json) {
-            $json->has('data', function (AssertableJson $json) {
-                $json->has('user');
-            });
-        });
-
-        $roles = User::find($userId)->getRoleNames();
-
-        $this->assertEquals('inventory-manager', $roles->first());
-    }
 }

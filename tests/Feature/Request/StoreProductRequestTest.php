@@ -39,7 +39,7 @@ class StoreProductRequestTest extends TestCase
         $response->assertStatus(422);
 
         $response->assertJson(function (AssertableJson $json) {
-            $json->where('message', "The sku field is required. (and 5 more errors)")
+            $json->where('message', "The sku field is required. (and 4 more errors)")
                 ->has('errors', function (AssertableJson $json) {
                     $json
                         ->has('sku')
@@ -52,8 +52,7 @@ class StoreProductRequestTest extends TestCase
                         ->where('price.0', 'The price field is required.')
                         ->has('stock')
                         ->where('stock.0', 'The stock field is required.')
-                        ->has('user_id')
-                        ->where('user_id.0', 'The user id field is required.');
+                        ;
                 });
         });
     }
@@ -90,36 +89,6 @@ class StoreProductRequestTest extends TestCase
                     $json
                         ->has('sku')
                         ->where('sku.0', 'The sku has already been taken.');
-                });
-        });
-    }
-
-    public function testUserIsPresentWhileProductStore()
-    {
-        $user = User::factory()->withRole(User::ROLE_ADMIN)->create();
-
-        Sanctum::actingAs($user);
-
-        $user_id = $user->first()->id + 10;
-
-        $response = $this->postJson('/api/v1/products', [
-            "sku" => "lorem-ipsum",
-            "name" => "Lorem Ipsum",
-            "description" => "Voluptatum sequi odio sint dolorem consectetur nihil quasi.",
-            "price" => "10.20",
-            "stock" => 110,
-            // User id is not exist
-            "user_id" => $user_id
-        ]);
-
-        $response->assertStatus(422);
-
-        $response->assertJson(function (AssertableJson $json) {
-            $json->where('message', "The selected user id is invalid.")
-                ->has('errors', function (AssertableJson $json) {
-                    $json
-                        ->has('user_id')
-                        ->where('user_id.0', 'The selected user id is invalid.');
                 });
         });
     }

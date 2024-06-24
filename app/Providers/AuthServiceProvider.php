@@ -6,9 +6,11 @@ namespace App\Providers;
 use App\Models\Audit;
 use App\Models\Product;
 use App\Models\Stock;
+use App\Models\User;
 use App\Policies\AuditPolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\StockPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -21,7 +23,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Product::class => ProductPolicy::class,
         Stock::class => StockPolicy::class,
-        Audit::class => AuditPolicy::class
+        Audit::class => AuditPolicy::class,
+        User::class => UserPolicy::class
     ];
 
     /**
