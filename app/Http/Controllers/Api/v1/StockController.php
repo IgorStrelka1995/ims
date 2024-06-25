@@ -46,6 +46,7 @@ class StockController extends Controller
      * @param Request $request
      * @param Product $product
      * @return StockResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function in(Request $request, Product $product)
     {
@@ -70,6 +71,7 @@ class StockController extends Controller
      * @param Request $request
      * @param Product $product
      * @return StockResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function out(Request $request, Product $product)
     {

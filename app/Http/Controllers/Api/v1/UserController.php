@@ -13,6 +13,7 @@ class UserController extends Controller
     /**
      * @param RegisterUser $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function register(RegisterUser $request)
     {

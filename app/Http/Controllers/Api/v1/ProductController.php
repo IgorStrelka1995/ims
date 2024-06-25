@@ -90,8 +90,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        // we should add event for remove product
-
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUser;
-use App\Http\Requests\RegisterUser;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -23,6 +20,7 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json(['data' => ['token' => $token]], 200);

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\Stock;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,7 +30,7 @@ class StockFactory extends Factory
         return [
             'product_id' => $product->id,
             'quantity' => $quantityChange,
-            'type' => $random ? 'In' : 'Out'
+            'type' => $random ? Stock::STOCK_IN : Stock::STOCK_OUT
         ];
     }
 }

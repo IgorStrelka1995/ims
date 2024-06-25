@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuditCollection;
-use App\Http\Resources\AuditResource;
 use App\Models\Audit;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -20,10 +19,9 @@ class AuditController extends Controller
         $this->authorize('viewAny', Audit::class);
 
         $audits = QueryBuilder::for(Audit::class)
-            ->allowedFilters([
-                AllowedFilter::exact('product_id'),
-            ])
-            ->paginate($request->input('per_page', Audit::ITEMS_PER_PAGE));
+            ->allowedFilters([AllowedFilter::exact('product_id')])
+            ->paginate($request->input('per_page', Audit::ITEMS_PER_PAGE))
+        ;
 
         return new AuditCollection($audits);
     }
