@@ -16,9 +16,9 @@ class AuditSeeder extends Seeder
     public function run(): void
     {
         $auditProductUpdateFactory = new AuditProductUpdateFactory();
-        $auditProductUpdateFactory->count(100)->create();
+        $auditProductUpdateFactory->count(300)->create();
 
         $auditProductStockFactory = new AuditProductStockFactory();
-        $auditProductStockFactory->count(100)->create();
+        $auditProductStockFactory->count(300)->create();
     }
 }
