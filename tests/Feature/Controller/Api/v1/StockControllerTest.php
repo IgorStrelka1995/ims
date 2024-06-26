@@ -107,10 +107,7 @@ class StockControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $response = $this->postJson('/api/v1/stocks/in/' . $product->id, [
-            "quantity" => 100,
-            "user_id" => $user->id
-        ]);
+        $response = $this->postJson('/api/v1/stocks/in/' . $product->id, ["quantity" => 100]);
 
         $response->assertStatus(201);
 
@@ -132,10 +129,7 @@ class StockControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $response = $this->postJson('/api/v1/stocks/out/' . $product->first()->id, [
-            "quantity" => 99,
-            "user_id" => $user->id
-        ]);
+        $response = $this->postJson('/api/v1/stocks/out/' . $product->first()->id, ["quantity" => 99]);
 
         $response->assertStatus(201);
 

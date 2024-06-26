@@ -11,6 +11,46 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
+     *  @OA\Post(
+     *     path="/api/v1/user/register",
+     *     summary="Creating a new user.",
+     *     tags={"User"},
+     *     security={{"bearerAuth": ""}},
+     *
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(
+     *                      @OA\Property(property="name", type="string"),
+     *                      @OA\Property(property="email", type="string"),
+     *                      @OA\Property(property="password", type="string"),
+     *                      @OA\Property(property="role", type="string"),
+     *                 )
+     *             },
+     *              example= {
+     *                      "name": "Peter",
+     *                      "email": "peter@mail.com",
+     *                      "password": "password",
+     *                      "role": "inventory-manager"
+     *                  }
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="user", type="object",
+     *                      @OA\Property(property="id", type="integer", example="1"),
+     *                      @OA\Property(property="name", type="string", example="Peter"),
+     *                      @OA\Property(property="email", type="string", example="peter@mail.com")
+     *                  )
+     *              ),
+     *         )
+     *     )
+     * )
+     *
      * @param RegisterUser $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException

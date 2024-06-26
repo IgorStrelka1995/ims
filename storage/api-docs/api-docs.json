@@ -1,0 +1,912 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Inventory Management System documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/audits": {
+            "get": {
+                "tags": [
+                    "Audit"
+                ],
+                "summary": "List of all audit logs",
+                "operationId": "f2d99bd4b4f9a895e62e725d33c25b49",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "product_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "action": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "product_id": 12,
+                                            "action": "product_add",
+                                            "created_at": "2024-06-26T07:51:10.000000Z"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "product_id": 13,
+                                            "action": "product_add",
+                                            "created_at": "2024-06-26T07:51:10.000000Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        },
+        "/api/v1/products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "List of all products",
+                "operationId": "58c1a6ac0aaf000641c821b802252026",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "sku": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "price": {
+                                                        "type": "integer"
+                                                    },
+                                                    "stock": {
+                                                        "type": "integer"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "sku": "sit-consequuntur-rerum",
+                                            "name": "sit consequuntur rerum",
+                                            "price": "490.66",
+                                            "stock": 99,
+                                            "description": "Fugiat eum et ut. Autem totam sunt asperiores minima.",
+                                            "created_at": "2024-06-26T07:51:10.000000Z"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "sku": "aut-omnis-vitae",
+                                            "name": "aut omnis vitae",
+                                            "price": "604.06",
+                                            "stock": 78,
+                                            "description": "Deserunt sed nobis est sint minus. Voluptas ut ut dolores laudantium et tempora.",
+                                            "created_at": "2024-06-26T07:51:10.000000Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Create new product.",
+                "operationId": "0ec0d87f9b641174df0f28100f3b760d",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "sku": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "price": {
+                                                "type": "string"
+                                            },
+                                            "stock": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "example": {
+                                "sku": "lorem-ipsum",
+                                "name": "Lorem Ipsum",
+                                "description": "Voluptatum sequi odio sint dolorem consectetur nihil quasi.",
+                                "price": "10.20",
+                                "stock": 10
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "sku": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "integer"
+                                                },
+                                                "stock": {
+                                                    "type": "integer"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        },
+        "/api/v1/products/{product}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get single product",
+                "operationId": "d48579323ca79a12e52e810c6aa6c9ea",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Product id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "sku": {
+                                                    "type": "string",
+                                                    "example": "lorem-ipsum"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "name"
+                                                },
+                                                "price": {
+                                                    "type": "integer",
+                                                    "example": "10.20"
+                                                },
+                                                "stock": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Voluptatum sequi odio sint dolorem consectetur nihil quasi."
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-26T07:51:10.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Update product",
+                "operationId": "aa160685e8ec32327a5192bf22e46ee8",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Product id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "sku": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "price": {
+                                                "type": "string"
+                                            },
+                                            "stock": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "example": {
+                                "sku": "lorem-ipsum-1111",
+                                "name": "Lorem Ipsum",
+                                "description": "Voluptatum sequi odio sint dolorem consectetur nihil quasi.",
+                                "price": "10.20",
+                                "stock": 10
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "sku": {
+                                                    "type": "string",
+                                                    "example": "lorem-ipsum"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "name"
+                                                },
+                                                "price": {
+                                                    "type": "integer",
+                                                    "example": "10.20"
+                                                },
+                                                "stock": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Voluptatum sequi odio sint dolorem consectetur nihil quasi."
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-26T07:51:10.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Delete product",
+                "operationId": "b1e0fae4b2bf362c0d44c30da91100d8",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Product id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        },
+        "/api/v1/stocks": {
+            "get": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "List of all stocks",
+                "operationId": "166396c784da14d7aa25eb5cf051d47d",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "product_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "product_id": 12,
+                                            "quantity": 91,
+                                            "type": "In",
+                                            "created_at": "2024-06-26T07:51:10.000000Z"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "product_id": 44,
+                                            "quantity": 49,
+                                            "type": "Out",
+                                            "created_at": "2024-06-26T07:51:10.000000Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        },
+        "/api/v1/stocks/{stock}": {
+            "get": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Get single stock",
+                "operationId": "552785b15edfd604a857f063c4ef28f5",
+                "parameters": [
+                    {
+                        "name": "stock",
+                        "in": "path",
+                        "description": "Stock id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "product_id": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "sku": {
+                                                            "type": "string",
+                                                            "example": "lorem-ipsum"
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "name"
+                                                        },
+                                                        "price": {
+                                                            "type": "integer",
+                                                            "example": "10.20"
+                                                        },
+                                                        "stock": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "Voluptatum sequi odio sint dolorem consectetur nihil quasi."
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "2024-06-26T07:51:10.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "quantity": {
+                                                    "type": "string",
+                                                    "example": 41
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "In"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2024-06-26T07:51:10.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        },
+        "/api/v1/stocks/in/{product}": {
+            "post": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Stock In for product.",
+                "operationId": "1596567f6bd925564c9cf846d014b717",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Product id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "quantity": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "example": {
+                                "quantity": "100"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "product": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "sku": {
+                                                            "type": "string",
+                                                            "example": "lorem-ipsum"
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "name"
+                                                        },
+                                                        "price": {
+                                                            "type": "integer",
+                                                            "example": "10.20"
+                                                        },
+                                                        "stock": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "Voluptatum sequi odio sint dolorem consectetur nihil quasi."
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "2024-06-26T07:51:10.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "quantity": {
+                                                    "type": "string",
+                                                    "example": "100"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "Out"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        },
+        "/api/v1/stocks/out/{product}": {
+            "post": {
+                "tags": [
+                    "Stock"
+                ],
+                "summary": "Stock Out for product.",
+                "operationId": "34c9e34589c81039526080b66e849a05",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Product id",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "quantity": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "example": {
+                                "quantity": "100"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "product": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "sku": {
+                                                            "type": "string",
+                                                            "example": "lorem-ipsum"
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "name"
+                                                        },
+                                                        "price": {
+                                                            "type": "integer",
+                                                            "example": "10.20"
+                                                        },
+                                                        "stock": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        },
+                                                        "description": {
+                                                            "type": "string",
+                                                            "example": "Voluptatum sequi odio sint dolorem consectetur nihil quasi."
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "example": "2024-06-26T07:51:10.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "quantity": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "Out"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        },
+        "/api/v1/user/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Creating a new user.",
+                "operationId": "f53b299170a3ff844a5219b11d72b373",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            },
+                                            "role": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            },
+                            "example": {
+                                "name": "Peter",
+                                "email": "peter@mail.com",
+                                "password": "password",
+                                "role": "inventory-manager"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": "1"
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Peter"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "peter@mail.com"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": ""
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

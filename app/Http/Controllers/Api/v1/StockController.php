@@ -17,7 +17,46 @@ use Spatie\QueryBuilder\QueryBuilder;
 class StockController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/v1/stocks",
+     *     summary="List of all stocks",
+     *     tags={"Stock"},
+     *     security={{"bearerAuth": ""}},
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="data", type="array", @OA\Items(
+     *                  @OA\Property(property="id", type="integer"),
+     *                  @OA\Property(property="product_id", type="integer"),
+     *                  @OA\Property(property="quantity", type="integer"),
+     *                  @OA\Property(property="type", type="string"),
+     *                  @OA\Property(property="created_at", type="string")
+     *              )),
+     *              example={
+     *                  "data": {{
+     *                      "id": 1,
+     *                      "product_id": 12,
+     *                      "quantity": 91,
+     *                      "type": "In",
+     *                      "created_at": "2024-06-26T07:51:10.000000Z"
+     *                  },
+     *                  {
+     *                      "id": 2,
+     *                      "product_id": 44,
+     *                      "quantity": 49,
+     *                      "type": "Out",
+     *                      "created_at": "2024-06-26T07:51:10.000000Z"
+     *                  }}
+     *              }
+     *         )
+     *     )
+     * )
+     *
+     * @param Request $request
+     * @return StockCollection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
     {
@@ -33,7 +72,46 @@ class StockController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/v1/stocks/{stock}",
+     *     summary="Get single stock",
+     *     tags={"Stock"},
+     *     security={{"bearerAuth": ""}},
+     *
+     *      @OA\Parameter(
+     *          description="Stock id",
+     *          in="path",
+     *          name="stock",
+     *          required=true,
+     *          example=1
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="id", type="integer", example=1),
+     *                  @OA\Property(property="product_id", type="object",
+     *                      @OA\Property(property="id", type="integer", example="1"),
+     *                      @OA\Property(property="sku", type="string", example="lorem-ipsum"),
+     *                      @OA\Property(property="name", type="string", example="name"),
+     *                      @OA\Property(property="price", type="integer", example="10.20"),
+     *                      @OA\Property(property="stock", type="integer", example=20),
+     *                      @OA\Property(property="description", type="string", example="Voluptatum sequi odio sint dolorem consectetur nihil quasi."),
+     *                      @OA\Property(property="created_at", type="string", example="2024-06-26T07:51:10.000000Z")
+     *                  ),
+     *                  @OA\Property(property="quantity", type="string", example=41),
+     *                  @OA\Property(property="type", type="string", example="In"),
+     *                  @OA\Property(property="created_at", type="string", example="2024-06-26T07:51:10.000000Z")
+     *              )
+     *         )
+     *     )
+     * )
+     *
+     * @param Stock $stock
+     * @return StockResource
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Stock $stock)
     {
@@ -43,6 +121,56 @@ class StockController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *     path="/api/v1/stocks/in/{product}",
+     *     summary="Stock In for product.",
+     *     tags={"Stock"},
+     *     security={{"bearerAuth": ""}},
+     *
+     *     @OA\Parameter(
+     *          description="Product id",
+     *          in="path",
+     *          name="product",
+     *          required=true,
+     *          example=1
+     *     ),
+     *
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(
+     *                      @OA\Property(property="quantity", type="integer"),
+     *                 )
+     *             },
+     *              example={
+     *                  "quantity": "100"
+     *              }
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="id", type="integer"),
+     *                  @OA\Property(property="product", type="object",
+     *                      @OA\Property(property="id", type="integer", example="1"),
+     *                      @OA\Property(property="sku", type="string", example="lorem-ipsum"),
+     *                      @OA\Property(property="name", type="string", example="name"),
+     *                      @OA\Property(property="price", type="integer", example="10.20"),
+     *                      @OA\Property(property="stock", type="integer", example=20),
+     *                      @OA\Property(property="description", type="string", example="Voluptatum sequi odio sint dolorem consectetur nihil quasi."),
+     *                      @OA\Property(property="created_at", type="string", example="2024-06-26T07:51:10.000000Z")
+     *                  ),
+     *                  @OA\Property(property="quantity", type="string", example="100"),
+     *                  @OA\Property(property="type", type="string", example="Out"),
+     *                  @OA\Property(property="created_at", type="string"),
+     *              )
+     *         )
+     *     )
+     * )
+     *
      * @param Request $request
      * @param Product $product
      * @return StockResource
@@ -68,6 +196,56 @@ class StockController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *     path="/api/v1/stocks/out/{product}",
+     *     summary="Stock Out for product.",
+     *     tags={"Stock"},
+     *     security={{"bearerAuth": ""}},
+     *
+     *     @OA\Parameter(
+     *          description="Product id",
+     *          in="path",
+     *          name="product",
+     *          required=true,
+     *          example=1
+     *     ),
+     *
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(
+     *                      @OA\Property(property="quantity", type="integer"),
+     *                 )
+     *             },
+     *              example={
+     *                  "quantity": "100"
+     *              }
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="id", type="integer"),
+     *                  @OA\Property(property="product", type="object",
+     *                      @OA\Property(property="id", type="integer", example="1"),
+     *                      @OA\Property(property="sku", type="string", example="lorem-ipsum"),
+     *                      @OA\Property(property="name", type="string", example="name"),
+     *                      @OA\Property(property="price", type="integer", example="10.20"),
+     *                      @OA\Property(property="stock", type="integer", example=20),
+     *                      @OA\Property(property="description", type="string", example="Voluptatum sequi odio sint dolorem consectetur nihil quasi."),
+     *                      @OA\Property(property="created_at", type="string", example="2024-06-26T07:51:10.000000Z")
+     *                  ),
+     *                  @OA\Property(property="quantity", type="string"),
+     *                  @OA\Property(property="type", type="string", example="Out"),
+     *                  @OA\Property(property="created_at", type="string"),
+     *              )
+     *         )
+     *     )
+     * )
+     *
      * @param Request $request
      * @param Product $product
      * @return StockResource

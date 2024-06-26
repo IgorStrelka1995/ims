@@ -11,7 +11,6 @@ class Audit extends Model
 
     const PRODUCT_ADD_ACTION = 'product_add';
     const PRODUCT_UPDATE_ACTION = 'product_update';
-    const PRODUCT_DELETE_ACTION = 'product_delete';
 
     const STOCK_IN_ACTION = 'stock_in';
     const STOCK_OUT_ACTION = 'stock_out';

@@ -134,8 +134,7 @@ class ProductControllerTest extends TestCase
             "name" => "Lorem Ipsum",
             "description" => "Voluptatum sequi odio sint dolorem consectetur nihil quasi.",
             "price" => "10.20",
-            "stock" => 110,
-            "user_id" => $user->first()->id
+            "stock" => 110
         ]);
 
         $response->assertStatus(201);
