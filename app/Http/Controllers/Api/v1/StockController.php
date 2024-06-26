@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\v1;
 use App\Events\StockIn;
 use App\Events\StockOut;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StockInRequest;
+use App\Http\Requests\StockOutRequest;
 use App\Http\Resources\StockCollection;
 use App\Http\Resources\StockResource;
 use App\Models\Audit;
@@ -176,11 +178,9 @@ class StockController extends Controller
      * @return StockResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function in(Request $request, Product $product)
+    public function in(StockInRequest $request, Product $product)
     {
         $this->authorize('in', Stock::class);
-
-        // Add validation rules
 
         $data = $request->only(['quantity']);
 
@@ -251,11 +251,9 @@ class StockController extends Controller
      * @return StockResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function out(Request $request, Product $product)
+    public function out(StockOutRequest $request, Product $product)
     {
         $this->authorize('out', Stock::class);
-
-        // Add validation rules
 
         $data = $request->only(['quantity']);
 
