@@ -7,6 +7,7 @@ use App\Events\ProductUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -62,7 +63,7 @@ class ProductController extends Controller
      * )
      *
      * @param Request $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return ProductCollection
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
@@ -80,7 +81,7 @@ class ProductController extends Controller
             ->allowedIncludes(['stocks'])
             ->paginate($request->input('per_page', Product::ITEMS_PER_PAGE));
 
-        return ProductResource::collection($products);
+        return new ProductCollection($products);
     }
 
     /**
